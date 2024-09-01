@@ -1,8 +1,7 @@
 import type { AxiosInstance } from 'axios';
+import type { Tid, TPagination } from 'src/entities/system/utils.type';
 import type {
-  TProductGroupId,
   TProductGroupList,
-  TProductGroupQuery,
   TProductGroupEditRequest,
   TProductGroupCreateRequest,
   TProductGroupCreateResponse,
@@ -10,6 +9,7 @@ import type {
 
 import { HttpStatusCode } from 'axios';
 
+import { UtilsSchema } from 'src/entities/system/utils.schema';
 import { ENDPOINT } from 'src/entities/system/endpoint.config';
 import { GeneralError } from 'src/entities/general-error/general-error';
 import { ValidationError } from 'src/entities/validation-error/validation-error';
@@ -18,8 +18,8 @@ import { ProductGroupSchema } from 'src/entities/product-group/product-group.sch
 export class ProductGroupService {
   public constructor(private readonly apiService: AxiosInstance) {}
 
-  public async getList(queryParams?: TProductGroupQuery): Promise<TProductGroupList> {
-    const query = ProductGroupSchema.query.parse(queryParams);
+  public async getList(queryParams?: TPagination): Promise<TProductGroupList> {
+    const query = UtilsSchema.pagination.parse(queryParams);
     const response = await this.apiService.get(
       `${ENDPOINT.PRODUCT_GROUP}?offset=${query.offset}&limit=${query.limit}`
     );
@@ -61,8 +61,8 @@ export class ProductGroupService {
     }
   }
 
-  public async edit(id: TProductGroupId, body: TProductGroupEditRequest): Promise<null> {
-    const productGroupId = ProductGroupSchema.id.parse(id);
+  public async edit(id: Tid, body: TProductGroupEditRequest): Promise<null> {
+    const productGroupId = UtilsSchema.id.parse(id);
     const data = ProductGroupSchema.editRequest.parse(body);
     const response = await this.apiService.patch(
       `${ENDPOINT.PRODUCT_GROUP}/${productGroupId}`,
@@ -86,8 +86,8 @@ export class ProductGroupService {
     }
   }
 
-  public async delete(id: TProductGroupId): Promise<null> {
-    const productGroupId = ProductGroupSchema.id.parse(id);
+  public async delete(id: Tid): Promise<null> {
+    const productGroupId = UtilsSchema.id.parse(id);
 
     const response = await this.apiService.delete(`${ENDPOINT.PRODUCT_GROUP}/${productGroupId}`);
 

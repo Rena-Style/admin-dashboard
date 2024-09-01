@@ -1,19 +1,14 @@
 import { z } from 'zod';
 
-export class ProductGroupSchema {
-  public static readonly id = z.string().uuid();
+import { UtilsSchema } from 'src/entities/system/utils.schema';
 
+export class ProductGroupSchema {
   public static readonly item = z.object({
-    product_group_id: ProductGroupSchema.id,
+    product_group_id: UtilsSchema.id,
     name: z.string(),
   });
 
   public static readonly list = z.array(ProductGroupSchema.item);
-
-  public static readonly query = z.object({
-    offset: z.number().optional().default(0),
-    limit: z.number().optional().default(10),
-  });
 
   public static readonly createRequest = ProductGroupSchema.item.pick({ name: true });
 

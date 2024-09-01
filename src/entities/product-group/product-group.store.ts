@@ -1,11 +1,8 @@
 import type { ZodError } from 'zod';
+import type { Tid, TPagination } from 'src/entities/system/utils.type';
 import type { GeneralError } from 'src/entities/general-error/general-error';
 import type { ValidationError } from 'src/entities/validation-error/validation-error';
-import type {
-  TProductGroupId,
-  TProductGroupList,
-  TProductGroupQuery,
-} from 'src/entities/product-group/product-group.type';
+import type { TProductGroupList } from 'src/entities/product-group/product-group.type';
 
 import { create } from 'zustand';
 
@@ -14,12 +11,12 @@ import { ProductGroupService } from 'src/entities/product-group/product-group.se
 
 export interface IProductGroupState {
   list: TProductGroupList | null;
-  id: TProductGroupId | null;
+  id: Tid | null;
   loading: boolean;
   error: ValidationError | GeneralError | ZodError | Error | null;
-  setId: (id: TProductGroupId) => void;
+  setId: (id: Tid) => void;
   removeId: () => void;
-  fetchProductGroupList: (query?: TProductGroupQuery) => Promise<void>;
+  fetchProductGroupList: (query?: TPagination) => Promise<void>;
 }
 
 export const useProductGroupStore = create<IProductGroupState>((set) => ({
