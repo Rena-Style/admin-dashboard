@@ -1,8 +1,11 @@
+import {useEffect} from 'react';
+
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import { _tasks, _posts, _timeline } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
+import {useProductGroupStore} from 'src/entities/product-group/product-group.store';
 
 import { AnalyticsNews } from '../analytics-news';
 import { AnalyticsTasks } from '../analytics-tasks';
@@ -17,6 +20,19 @@ import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 // ----------------------------------------------------------------------
 
 export function OverviewAnalyticsView() {
+
+  const {fetchProductGroupList, error, list, loading} = useProductGroupStore()
+
+  useEffect(() => {
+    fetchProductGroupList({offset: 0, limit: 10})
+
+
+  }, [fetchProductGroupList])
+
+  useEffect(() => {
+    console.log(list, error, loading)
+  }, [list, error, loading])
+
   return (
     <DashboardContent maxWidth="xl">
       <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
@@ -158,6 +174,8 @@ export function OverviewAnalyticsView() {
         <Grid xs={12} md={6} lg={8}>
           <AnalyticsTasks title="Tasks" list={_tasks} />
         </Grid>
+
+        <Grid xs={12} md={6} lg={8} />
       </Grid>
     </DashboardContent>
   );
